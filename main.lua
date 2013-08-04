@@ -29,17 +29,6 @@ function love.keypressed(key, unicode)
    if key == "escape" then
       love.event.push("quit")
    end
---[[
-   if key == "down" then
-      p1y = p1y + 1
-   end
-   if key == "up" then
-      p1y = p1y - 1
-   end
-   if unicode > 31 and unicode < 127 then
-      text = text .. string.char(unicode)
-   end
---]]
 end
 
 function love.update(dt)
@@ -75,14 +64,6 @@ function move_ball()
       xdirection = -acc
       ydirection = math.random(0, acc) * p2direction
    end
-   -- if math.abs(p1x - bx) < pw and math.abs(p1y - by) < ph then
-   --    xdirection = -acc
-   --    ydirection = math.random(-acc, acc)
-   -- end
-   -- if math.abs(p2x - bx) < pw and math.abs(p2y - by) < ph then
-   --    xdirection = acc
-   --    ydirection = math.random(-acc, acc)
-   -- end
    if (by - br) < 0 or (by + br) > wheight then
       ydirection = -ydirection
    end
@@ -101,7 +82,6 @@ function move_ball()
 end
 
 function love.draw()
-   --love.graphics.printf(text, 0, 0, 800)
    love.graphics.print(p1score, 50, 10)
    love.graphics.print(p2score, wwidth - 50, 10)
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
