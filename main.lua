@@ -7,7 +7,6 @@ function love.load()
 
    bounce = love.audio.newSource("bounce.ogg", "static")
    score = love.audio.newSource("score.ogg", "static")
-   pausing = love.audio.newSource("pausing.ogg", "static")
    pause = love.audio.newSource("pause.ogg")
    menu = love.audio.newSource("menu.ogg")
 
@@ -53,7 +52,6 @@ function love.keypressed(key, unicode)
 
    if key == " " then
       game_paused = not game_paused
-      --love.audio.play(pausing)
       if game_paused then
 	 love.audio.play(pause)
       else
