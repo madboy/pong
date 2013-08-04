@@ -7,16 +7,22 @@ function love.load()
 
    bounce = love.audio.newSource("bounce.ogg", "static")
    score = love.audio.newSource("score.ogg", "static")
+   pausing = love.audio.newSource("pausing.ogg", "static")
+   pause = love.audio.newSource("pause.ogg")
+   menu = love.audio.newSource("menu.ogg")
+
+   game_pause = false
+   show_menu = true
    pw = 10
    ph = 40
 
    p1x = pw * 5
-   p1y = 10
+   p1y = wheight / 2
    p1fx = p1x + pw
    p1direction = 0
    
    p2x = wwidth - pw * 6
-   p2y = 10
+   p2y = wheight / 2
    p2fx = p2x + pw
    p2direction = 0
 
@@ -35,12 +41,27 @@ function love.load()
 end
 
 function love.keypressed(key, unicode)
+   if key == "return" then
+      show_menu = false
+      love.audio.stop(menu)
+   end
    if key == "escape" then
       love.event.push("quit")
+   end
+   if key == " " then
+      game_paused = not game_paused
+      love.audio.play(pausing)
+      if game_paused then
+	 love.audio.play(pause)
+      else
+	 love.audio.stop(pause)
+      end
    end
 end
 
 function love.update(dt)
+   if show_menu then return end
+   if game_paused then return end
    p1direction = 0
    p2direction = 0
    if love.keyboard.isDown("s") and (p1y + ph) < wheight then
@@ -94,6 +115,14 @@ function move_ball()
 end
 
 function love.draw()
+   if show_menu then 
+      love.graphics.print("Press enter to start game", 140, wheight/2)
+      love.audio.play(menu)
+      return
+   end
+   if game_paused then
+      love.graphics.print("GAME PAUSED", wwidth/2-130, wheight/2)
+   end
    draw_score_board()
    draw_net()
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
