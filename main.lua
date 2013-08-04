@@ -7,9 +7,11 @@ function love.load()
 
    bounce = love.audio.newSource("bounce.ogg", "static")
    score = love.audio.newSource("score.ogg", "static")
-   pause = love.audio.newSource("pause.ogg")
-   menu = love.audio.newSource("menu.ogg")
+   pause = love.audio.newSource("pause.ogg", "stream")
+   menu = love.audio.newSource("menu.ogg", "stream")
 
+   title = love.graphics.newImage("title.png")
+   title:setFilter("nearest", "nearest")
    game_pause = false
    show_menu = true
    game_over = false
@@ -125,6 +127,7 @@ end
 
 function love.draw()
    if show_menu then 
+      draw_title()
       love.graphics.print("Press enter to start game", 140, wheight/2)
       love.audio.play(menu)
       return
@@ -141,6 +144,13 @@ function love.draw()
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
    love.graphics.rectangle("fill", p2x, p2y, pw, ph)
    love.graphics.circle("fill", bx, by, br, 5)
+end
+
+function draw_title()
+   love.graphics.push()
+   love.graphics.scale(10, 10)
+   love.graphics.draw(title, 10, 10)
+   love.graphics.pop()
 end
 
 function draw_net()
