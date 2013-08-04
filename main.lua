@@ -1,15 +1,19 @@
 function love.load()
    wheight = love.graphics.getHeight()
    wwidth = love.graphics.getWidth()
-   pw = 15
+
+   font = love.graphics.newFont(40)
+   love.graphics.setFont(font)
+
+   pw = 10
    ph = 40
 
-   p1x = 10
+   p1x = pw * 5
    p1y = 10
    p1fx = p1x + pw
    p1direction = 0
    
-   p2x = wwidth - 30
+   p2x = wwidth - pw * 6
    p2y = 10
    p2fx = p2x + pw
    p2direction = 0
@@ -70,20 +74,23 @@ function move_ball()
    if (bx - br) < 0 then
       p2score = p2score + 1
       bx = wwidth / 2
+      by = wheight / 2
       xdirection = -xdirection
+      ydirection = math.random(-acc, acc)
    end
    if (bx + br) > wwidth then
       p1score = p1score + 1
       bx = wwidth / 2
+      by = wheight / 2
       xdirection = -xdirection
+      ydirection = math.random(-acc, acc)
    end
    bx = bx + xdirection
    by = by + ydirection
 end
 
 function love.draw()
-   love.graphics.print(p1score, 50, 10)
-   love.graphics.print(p2score, wwidth - 50, 10)
+   draw_score_board()
    draw_net()
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
    love.graphics.rectangle("fill", p2x, p2y, pw, ph)
@@ -95,4 +102,12 @@ function draw_net()
    for i=0,segments do
          love.graphics.line(wwidth/2, 30*i, wwidth/2, 30*i+20)
    end
+end
+
+function draw_score_board()
+   love.graphics.print(p1score, wwidth / 2 - 100, 10)
+   love.graphics.print(p2score, wwidth / 2 + 60, 10)
+end
+
+function reset_ball()
 end
