@@ -1,17 +1,21 @@
 function love.load()
+   wheight = love.graphics.getHeight()
+   wwidth = love.graphics.getWidth()
    pw = 15
    ph = 40
 
    p1x = 10
    p1y = 10
    p1fx = p1x + pw
-
-   p2x = love.graphics.getWidth() - 30
+   p1direction = 0
+   
+   p2x = wwidth - 30
    p2y = 10
    p2fx = p2x + pw
+   p2direction = 0
 
-   bx = love.graphics.getWidth() / 2
-   by = love.graphics.getHeight() / 2
+   bx = wwidth / 2
+   by = wheight / 2
    br = 10
    
    acc = 2
@@ -39,17 +43,23 @@ function love.keypressed(key, unicode)
 end
 
 function love.update(dt)
-   if love.keyboard.isDown("s") then
+   p1direction = 0
+   p2direction = 0
+   if love.keyboard.isDown("s") and (p1y + ph) < wheight then
       p1y = p1y + acc
+      p1direction = -2
    end
-   if love.keyboard.isDown("w") then
+   if love.keyboard.isDown("w") and p1y > 0 then
       p1y = p1y - acc
+      p1direction = 2
    end
-   if love.keyboard.isDown("down") then
+   if love.keyboard.isDown("down") and (p2y + ph) < wheight then
       p2y = p2y + acc
+      p2direction = -2
    end
-   if love.keyboard.isDown("up") then
+   if love.keyboard.isDown("up") and p2y > 0 then
       p2y = p2y - acc
+      p2direction = 2
    end
    move_ball()
 end
@@ -57,13 +67,13 @@ end
 function move_ball()
    if p1fx > (bx - br) and p1x < (bx - br)
       and p1y < (by + br) and (p1y + ph) > (by - br) then
-      xdirection = -acc
-      ydirection = math.random(-acc, acc)
+      xdirection = acc
+      ydirection = math.random(0, acc) * p1direction
    end
    if (bx + br) > p2x and p2fx > (bx + br)
       and p2y < (by + br) and (p2y + ph) > (by - br) then
-      xdirection = acc
-      ydirection = math.random(-acc, acc)
+      xdirection = -acc
+      ydirection = math.random(0, acc) * p2direction
    end
    -- if math.abs(p1x - bx) < pw and math.abs(p1y - by) < ph then
    --    xdirection = -acc
@@ -73,27 +83,27 @@ function move_ball()
    --    xdirection = acc
    --    ydirection = math.random(-acc, acc)
    -- end
-   if by < 5 or math.abs(by - love.graphics.getHeight()) < 5 then
+   if (by - br) < 0 or (by + br) > wheight then
       ydirection = -ydirection
    end
-   if bx < 0 then
+   if (bx - br) < 0 then
       p2score = p2score + 1
-      bx = love.graphics.getWidth() / 2
+      bx = wwidth / 2
       xdirection = -xdirection
    end
-   if bx > love.graphics.getWidth() then
+   if (bx + br) > wwidth then
       p1score = p1score + 1
-      bx = love.graphics.getWidth() / 2
+      bx = wwidth / 2
       xdirection = -xdirection
    end
-   bx = bx - xdirection
-   by = by - ydirection
+   bx = bx + xdirection
+   by = by + ydirection
 end
 
 function love.draw()
    --love.graphics.printf(text, 0, 0, 800)
    love.graphics.print(p1score, 50, 10)
-   love.graphics.print(p2score, love.graphics.getWidth() - 50, 10)
+   love.graphics.print(p2score, wwidth - 50, 10)
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
    love.graphics.rectangle("fill", p2x, p2y, pw, ph)
    love.graphics.circle("fill", bx, by, br, 10)
