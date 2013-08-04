@@ -73,17 +73,11 @@ function move_ball()
    end
    if (bx - br) < 0 then
       p2score = p2score + 1
-      bx = wwidth / 2
-      by = wheight / 2
-      xdirection = -xdirection
-      ydirection = math.random(-acc, acc)
+      reset_ball()
    end
    if (bx + br) > wwidth then
       p1score = p1score + 1
-      bx = wwidth / 2
-      by = wheight / 2
-      xdirection = -xdirection
-      ydirection = math.random(-acc, acc)
+      reset_ball()
    end
    bx = bx + xdirection
    by = by + ydirection
@@ -110,4 +104,8 @@ function draw_score_board()
 end
 
 function reset_ball()
+   bx = wwidth / 2
+   by = wheight / 2
+   xdirection = -xdirection
+   ydirection = math.random(-acc, acc)
 end
