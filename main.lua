@@ -5,6 +5,8 @@ function love.load()
    font = love.graphics.newFont(40)
    love.graphics.setFont(font)
 
+   bounce = love.audio.newSource("bounce.ogg", "static")
+   score = love.audio.newSource("score.ogg", "static")
    pw = 10
    ph = 40
 
@@ -65,21 +67,26 @@ function move_ball()
       bacc = bacc + acc_factor
       xdirection = bacc
       ydirection = math.random(0, bacc) * p1direction
+      love.audio.play(bounce)
    end
    if (bx + br) > p2x and p2fx > (bx + br) and p2y < (by + br) and (p2y + ph) > (by - br) then
       bacc = bacc + acc_factor
       xdirection = -bacc
       ydirection = math.random(0, bacc) * p2direction
+      love.audio.play(bounce)
    end
    if (by - br) < 0 or (by + br) > wheight then
       ydirection = -ydirection
+      love.audio.play(bounce)
    end
    if (bx - br) < 0 then
       p2score = p2score + 1
+      love.audio.play(score)
       reset_ball()
    end
    if (bx + br) > wwidth then
       p1score = p1score + 1
+      love.audio.play(score)
       reset_ball()
    end
    bx = bx + xdirection
