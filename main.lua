@@ -41,16 +41,19 @@ function love.load()
 end
 
 function love.keypressed(key, unicode)
+   if key == "escape" then
+      love.event.push("quit")
+   end
    if key == "return" then
       show_menu = false
       love.audio.stop(menu)
    end
-   if key == "escape" then
-      love.event.push("quit")
-   end
+   
+   if show_menu then return end
+
    if key == " " then
       game_paused = not game_paused
-      love.audio.play(pausing)
+      --love.audio.play(pausing)
       if game_paused then
 	 love.audio.play(pause)
       else
@@ -131,9 +134,9 @@ function love.draw()
 end
 
 function draw_net()
-   segments = wheight / 20
+   segments = wheight / 30 -1
    for i=0,segments do
-         love.graphics.line(wwidth/2, 30*i, wwidth/2, 30*i+20)
+      love.graphics.line(wwidth/2, 30*i+8, wwidth/2, 30*i+20)
    end
 end
 
