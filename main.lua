@@ -12,6 +12,8 @@ function love.load()
 
    game_pause = false
    show_menu = true
+   game_over = false
+
    pw = 10
    ph = 40
 
@@ -48,7 +50,7 @@ function love.keypressed(key, unicode)
       love.audio.stop(menu)
    end
    
-   if show_menu then return end
+   if show_menu or game_over then return end
 
    if key == " " then
       game_paused = not game_paused
@@ -61,8 +63,8 @@ function love.keypressed(key, unicode)
 end
 
 function love.update(dt)
-   if show_menu then return end
-   if game_paused then return end
+   if show_menu or game_paused or game_over then return end
+
    p1direction = 0
    p2direction = 0
    if love.keyboard.isDown("s") and (p1y + ph) < wheight then
@@ -105,11 +107,17 @@ function move_ball()
       p2score = p2score + 1
       love.audio.play(score)
       reset_ball()
+      if p2score == 11 then
+	 game_over = true
+      end
    end
    if (bx + br) > wwidth then
       p1score = p1score + 1
       love.audio.play(score)
       reset_ball()
+      if p1score == 11 then
+	 game_over = true
+      end
    end
    bx = bx + xdirection
    by = by + ydirection
@@ -123,6 +131,10 @@ function love.draw()
    end
    if game_paused then
       love.graphics.print("GAME PAUSED", wwidth/2-130, wheight/2)
+   end
+   if game_over then
+      love.graphics.print("GAME OVER", wwidth/2 -130, wheight/2)
+      love.audio.play(pause)
    end
    draw_score_board()
    draw_net()
