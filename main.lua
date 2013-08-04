@@ -84,13 +84,13 @@ end
 function love.draw()
    love.graphics.print(p1score, 50, 10)
    love.graphics.print(p2score, wwidth - 50, 10)
-   draw_middle()
+   draw_net()
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
    love.graphics.rectangle("fill", p2x, p2y, pw, ph)
    love.graphics.circle("fill", bx, by, br, 10)
 end
 
-function draw_middle()
+function draw_net()
    segments = wheight / 20
    for i=0,segments do
          love.graphics.line(wwidth/2, 30*i, wwidth/2, 30*i+20)
