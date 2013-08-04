@@ -23,8 +23,11 @@ function love.load()
    br = 10
    
    acc = 2
+   acc_factor = 0.2
    xdirection = acc
    ydirection = 0
+   bacc = acc
+
    p1score = 0
    p2score = 0
 end
@@ -58,15 +61,15 @@ function love.update(dt)
 end
 
 function move_ball()
-   if p1fx > (bx - br) and p1x < (bx - br)
-      and p1y < (by + br) and (p1y + ph) > (by - br) then
-      xdirection = acc
-      ydirection = math.random(0, acc) * p1direction
+   if p1fx > (bx - br) and p1x < (bx - br) and p1y < (by + br) and (p1y + ph) > (by - br) then
+      bacc = bacc + acc_factor
+      xdirection = bacc
+      ydirection = math.random(0, bacc) * p1direction
    end
-   if (bx + br) > p2x and p2fx > (bx + br)
-      and p2y < (by + br) and (p2y + ph) > (by - br) then
-      xdirection = -acc
-      ydirection = math.random(0, acc) * p2direction
+   if (bx + br) > p2x and p2fx > (bx + br) and p2y < (by + br) and (p2y + ph) > (by - br) then
+      bacc = bacc + acc_factor
+      xdirection = -bacc
+      ydirection = math.random(0, bacc) * p2direction
    end
    if (by - br) < 0 or (by + br) > wheight then
       ydirection = -ydirection
@@ -88,7 +91,7 @@ function love.draw()
    draw_net()
    love.graphics.rectangle("fill", p1x, p1y, pw, ph)
    love.graphics.rectangle("fill", p2x, p2y, pw, ph)
-   love.graphics.circle("fill", bx, by, br, 10)
+   love.graphics.circle("fill", bx, by, br, 5)
 end
 
 function draw_net()
@@ -104,8 +107,9 @@ function draw_score_board()
 end
 
 function reset_ball()
+   bacc = acc
    bx = wwidth / 2
    by = wheight / 2
    xdirection = -xdirection
-   ydirection = math.random(-acc, acc)
+   ydirection = math.random(-bacc, bacc)
 end
