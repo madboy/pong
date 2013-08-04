@@ -41,6 +41,8 @@ function love.load()
 
    p1score = 0
    p2score = 0
+   max_score = 11
+   winner  = ""
 end
 
 function love.keypressed(key, unicode)
@@ -109,16 +111,18 @@ function move_ball()
       p2score = p2score + 1
       love.audio.play(score)
       reset_ball()
-      if p2score == 11 then
+      if p2score == max_score then
 	 game_over = true
+	 winner = "PLAYER 2 WINS!!"
       end
    end
    if (bx + br) > wwidth then
       p1score = p1score + 1
       love.audio.play(score)
       reset_ball()
-      if p1score == 11 then
+      if p1score == max_score then
 	 game_over = true
+	 winner = "PLAYER 1 WINS!"
       end
    end
    bx = bx + xdirection
@@ -136,7 +140,8 @@ function love.draw()
       love.graphics.print("GAME PAUSED", wwidth/2-130, wheight/2)
    end
    if game_over then
-      love.graphics.print("GAME OVER", wwidth/2 -130, wheight/2)
+      love.graphics.printf("GAME OVER", 0, 300, wwidth, "center")
+      love.graphics.printf(winner, 0, 250, wwidth, "center")
       love.audio.play(pause)
    end
    draw_score_board()
